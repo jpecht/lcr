@@ -27,7 +27,7 @@ export default {
     Player,
   },
   data: () => ({
-    currentRoll: '',
+    currentRoll: [],
     numPlayers: 3,
     scores: [],
     startingScore: 3,
@@ -47,18 +47,34 @@ export default {
     indexToRight() {
       if (this.turnIndex === this.numPlayers - 1) return 0;
       return this.turnIndex + 1;
-    }
+    },
   },
   methods: {
+    didSomeoneWin() {
+      return (this.scores.filter(score => score > 0).length <= 1);
+    },
     diceToDisplay(playerIndex) {
       if (playerIndex === this.turnIndex) {
         return this.currentRoll;
       }
-      return '';
+      return [];
+    },
+    goToNextTurn() {
+      if (this.didSomeoneWin()) {
+        return;
+      }
+      do {
+        this.turnIndex = (this.turnIndex === this.numPlayers - 1) ? 0 : this.turnIndex + 1;
+      } while (this.scores[this.turnIndex] === 0);
     },
     handleRollClick() {
-      this.turnIndex = (this.turnIndex === this.numPlayers - 1) ? 0 : this.turnIndex + 1;
-      this.currentRoll = this.rollDice();
+      this.goToNextTurn();
+      this.currentRoll = [];
+      let numDiceToRoll = this.scores[this.turnIndex];
+      if (numDiceToRoll > 3) numDiceToRoll = 3;
+      for (let i = 0; i < numDiceToRoll; i += 1) {
+        this.currentRoll.push(this.rollDice());
+      }
       this.updateScores();
     },
     rollDice() {
@@ -69,15 +85,17 @@ export default {
       return 'O';
     },
     updateScores() {
-      if (this.currentRoll === 'L') {
-        this.scores[this.indexToLeft] += 1;
-        this.scores[this.turnIndex] -= 1;
-      } else if (this.currentRoll === 'C') {
-        this.scores[this.turnIndex] -= 1;
-      } else if (this.currentRoll === 'R') {
-        this.scores[this.indexToRight] += 1;
-        this.scores[this.turnIndex] -= 1;
-      }
+      this.currentRoll.forEach((roll) => {
+        if (roll === 'L') {
+          this.scores[this.indexToLeft] += 1;
+          this.scores[this.turnIndex] -= 1;
+        } else if (roll === 'C') {
+          this.scores[this.turnIndex] -= 1;
+        } else if (roll === 'R') {
+          this.scores[this.indexToRight] += 1;
+          this.scores[this.turnIndex] -= 1;
+        }
+      });
     },
   },
 };

@@ -20,8 +20,8 @@ export default {
   },
   props: {
     diceDisplay: {
-      type: String,
-      default: '',
+      type: Array,
+      default: [],
     },
     score: {
       type: Number,

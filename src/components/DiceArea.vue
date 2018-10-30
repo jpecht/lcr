@@ -1,6 +1,6 @@
 <template>
   <div class="dicearea">
-    {{ diceDisplay }}
+    {{ diceDisplay.join(' ') }}
   </div>
 </template>
 
@@ -9,7 +9,7 @@ export default {
   name: 'DiceArea',
   props: {
     diceDisplay: {
-      type: String,
+      type: Array,
       required: true,
     },
   },

@@ -22,7 +22,7 @@
   padding: 25px 10px;
   text-align: right;
   a {
-    background-color: #f3f3f3;
+    background-color: #fcfcfc;
     border: 1px solid #ccc;
     border-radius: 10px;
     color: #2c3e50;
@@ -30,7 +30,7 @@
     padding: 8px 24px;
     text-decoration: none;
     &:hover {
-      background-color: #eee;
+      background-color: #f6f6f6;
       border: 1px solid #aaa;      
     }
     &.router-link-exact-active {
