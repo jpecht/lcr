@@ -27,7 +27,7 @@
     border-radius: 10px;
     color: #2c3e50;
     margin: 0 10px;
-    padding: 10px 25px;
+    padding: 8px 24px;
     text-decoration: none;
     &:hover {
       background-color: #eee;
