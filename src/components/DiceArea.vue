@@ -65,6 +65,7 @@ export default {
 .dicearea {
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   font-size: 40px;
   font-weight: 300;
