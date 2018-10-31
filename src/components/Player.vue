@@ -6,12 +6,6 @@
     <div class="nameplate">
       Jefferson
     </div>
-    <div class="probability">
-      <span class="probability-perc">
-        {{ Math.round(100 * probability) }}%
-      </span>
-      chance of winning
-    </div>
     <Scoreboard
       :diceIsRolling="diceIsRolling"
       :score="score"/>
@@ -87,9 +81,5 @@ export default {
 .nameplate {
   font-size: 16px;
   margin: 30px 10px 10px;
-}
-
-.probability-perc {
-  font-weight: 600;
 }
 </style>

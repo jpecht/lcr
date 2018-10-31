@@ -84,7 +84,7 @@ export default {
 .score {
   font-size: 42px;
   height: 140px;
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 

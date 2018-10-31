@@ -1,6 +1,7 @@
 <template>
   <div class="chart-container">
     <div class="chart">
+      <div class="chart-title">chance of winning</div>
       <svg
         :height="height"
         :width="width">
@@ -53,6 +54,14 @@
             :cx="getXCoord(index)"
             :cy="getYCoord(prob)"
             r="3"/>
+          <text
+            class="currentProbLabel"
+            :x="getXCoord(chartData.length - 1) + 10"
+            :y="getYCoord(currentProb)"
+            dy="0.35em"
+            text-anchor="start">
+            {{ Math.round(currentProb * 100) }}%
+          </text>
         </g>
       </svg>
     </div>
@@ -73,7 +82,7 @@ export default {
     padding: {
       left: 50,
       right: 20,
-      top: 25,
+      top: 15,
       bottom: 25,
     },
     width: 280,
@@ -81,6 +90,7 @@ export default {
   computed: {
     chartHeight() { return this.height - this.padding.top - this.padding.bottom; },
     chartWidth() { return this.width - this.padding.left - this.padding.right; },
+    currentProb() { return this.chartData[this.chartData.length - 1]; },
   },
   methods: {
     getXCoord(index) {
@@ -100,6 +110,11 @@ export default {
   border: 1px solid #555;
   border-radius: 15px;
   display: inline-block;
+}
+
+.chart-title {
+  font-size: 0.95em;
+  margin-top: 10px;
 }
 
 .axis {
@@ -128,5 +143,10 @@ circle.active {
 
 text {
   font-size: 11px;
+}
+
+.currentProbLabel {
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>
