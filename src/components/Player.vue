@@ -7,7 +7,10 @@
       Jefferson
     </div>
     <div class="probability">
-      {{ Math.round(100 * probability) }}% chance of winning
+      <span class="probability-perc">
+        {{ Math.round(100 * probability) }}%
+      </span>
+      chance of winning
     </div>
     <div class="score">
       <div class="score-display-container">
@@ -62,6 +65,7 @@ export default {
   },
   data: () => ({
     animatingDice: false,
+    scoreChangeInterval: null,
     scoreDifference: 0,
     scoreDisplay: 0,
     triggerDifferenceAnimation: false,
@@ -78,18 +82,21 @@ export default {
   },
   methods: {
     updateScores() {
+      clearInterval(this.scoreChangeInterval);
+
       // Record the change in score
-      this.scoreDifference = this.score - this.scoreDisplay;
+      const score = this.score;
+      this.scoreDifference = score - this.scoreDisplay;
 
       if (this.scoreDifference) {
         // Update the score the user is seeing
         const scoreChangeDelay = 400;
-        const scoreChangeDuration = 500;
+        const scoreChangeDuration = 400;
         setTimeout(() => {
-          const interval = setInterval(() => {
+          this.scoreChangeInterval = setInterval(() => {
             this.scoreDisplay += (this.scoreDifference > 0) ? 1 : -1;
-            if (this.scoreDisplay === this.score) {
-              clearInterval(interval);
+            if (this.scoreDisplay === score) {
+              clearInterval(this.scoreChangeInterval);
             }
           }, scoreChangeDuration / Math.abs(this.scoreDifference));
         }, scoreChangeDelay);
@@ -120,6 +127,10 @@ export default {
 .nameplate {
   font-size: 16px;
   margin: 30px 10px 10px;
+}
+
+.probability-perc {
+  font-weight: 600;
 }
 
 .score {
