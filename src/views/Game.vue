@@ -13,6 +13,7 @@
         :key="index"
         :dice="diceToDisplay(index)"
         :diceIsRolling="diceIsRolling"
+        :probability="probabilities[index]"
         :score="score"
         :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
     </div>
@@ -30,6 +31,9 @@
 
 <script>
 import Player from '@/components/Player.vue';
+import Simulator from '@/Simulator';
+
+const sim = new Simulator();
 
 export default {
   name: 'home',
@@ -40,6 +44,7 @@ export default {
     currentRoll: [],
     diceIsRolling: false,
     numPlayers: 3,
+    probabilities: [],
     scores: [],
     startingScore: 3,
     turnIndex: -1, // the index of the player whose turn it is
@@ -49,12 +54,10 @@ export default {
   },
   computed: {
     indexToLeft() {
-      if (this.turnIndex === 0) return this.numPlayers - 1;
-      return this.turnIndex - 1;
+      return (this.turnIndex === 0) ? this.numPlayers - 1 : this.turnIndex - 1;
     },
     indexToRight() {
-      if (this.turnIndex === this.numPlayers - 1) return 0;
-      return this.turnIndex + 1;
+      return (this.turnIndex === this.numPlayers - 1) ? 0 : this.turnIndex + 1;
     },
   },
   methods: {
@@ -99,13 +102,19 @@ export default {
       this.turnIndex = -1;
 
       // Initialize score for each player
+      this.probabilities = [];
       this.scores = [];
       for (let i = 0; i < this.numPlayers; i += 1) {
+        this.probabilities.push(0);
         this.scores.push(this.startingScore);
       }
+      this.probabilities = sim.calculateProbabilities(this.scores);
     },
     updateIfDiceIsRolling(value) {
       this.diceIsRolling = value;
+      if (this.diceIsRolling === false) {
+        this.probabilities = sim.calculateProbabilities(this.scores);
+      }
     },
     updateScores() {
       this.currentRoll.forEach((roll) => {

@@ -6,6 +6,9 @@
     <div class="nameplate">
       Jefferson
     </div>
+    <div class="probability">
+      {{ Math.round(100 * probability) }}% chance of winning
+    </div>
     <div class="score">
       <div class="score-display-container">
         <div class="score-display">
@@ -42,6 +45,10 @@ export default {
     },
     diceIsRolling: {
       type: Boolean,
+      required: true,
+    },
+    probability: {
+      type: Number,
       required: true,
     },
     score: {
@@ -117,6 +124,7 @@ export default {
 
 .score {
   font-size: 42px;
+  height: 60px;
   margin-top: 20px;
   text-align: center;
 }
@@ -126,8 +134,6 @@ export default {
   position: relative;
 }
 
-.score-difference {
-}
 .score-difference-positive { color: #033617; }
 .score-difference-negative { color: #4a0406; }
 
