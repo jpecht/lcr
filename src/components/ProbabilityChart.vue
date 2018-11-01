@@ -43,6 +43,7 @@
           </g>
           <line
             v-for="(prob, index) in chartData"
+            :key="`data-line-${index}`"
             class="data-line"
             :x1="index === 0 ? getXCoord(index) : getXCoord(index - 1)"
             :x2="getXCoord(index)"
@@ -50,7 +51,10 @@
             :y2="getYCoord(prob)"/>
           <circle
             v-for="(prob, index) in chartData"
-            :class="(index === chartData.length - 1) ? 'active' : ''"
+            :key="`data-circle-${index}`"
+            :class="{
+              active: (index === chartData.length - 1),
+            }"
             :cx="getXCoord(index)"
             :cy="getYCoord(prob)"
             r="3"/>
@@ -95,10 +99,10 @@ export default {
   methods: {
     getXCoord(index) {
       const domain = 5 * Math.ceil(this.chartData.length / 5);
-      return this.chartWidth * index / domain;
+      return this.chartWidth * (index / domain);
     },
     getYCoord(prob) {
-      return this.chartHeight - this.chartHeight * prob;
+      return this.chartHeight - (this.chartHeight * prob);
     },
   },
 };

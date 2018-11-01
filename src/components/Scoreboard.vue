@@ -53,12 +53,12 @@ export default {
       clearInterval(this.scoreChangeInterval);
 
       // Record the change in score
-      const score = this.score;
+      const { score } = this;
       this.scoreDifference = score - this.scoreDisplay;
 
       if (this.scoreDifference) {
         // Update the score the user is seeing
-        const scoreChangeDelay = 400;
+        const scoreChangeDelay = 350;
         const scoreChangeDuration = 400;
         setTimeout(() => {
           this.scoreChangeInterval = setInterval(() => {
@@ -82,7 +82,7 @@ export default {
 
 <style scoped>
 .score {
-  font-size: 42px;
+  font-size: 52px;
   height: 140px;
   margin-top: 10px;
   text-align: center;
@@ -93,6 +93,10 @@ export default {
   position: relative;
 }
 
+.score-difference {
+  position: relative;
+  top: -20px;
+}
 .score-difference-positive { color: #033617; }
 .score-difference-negative { color: #4a0406; }
 
@@ -103,6 +107,6 @@ export default {
 .lowerfade-enter,
 .lowerfade-leave-to {
   opacity: 0;
-  transform: translate(0, 60px);
+  transform: translate(0, 50px);
 }
 </style>

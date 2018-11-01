@@ -7,8 +7,10 @@
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Krub');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab');
+@import 'styles/colors.css';
 
 body {
+  box-sizing: border-box;
   margin: 0;
 }
 

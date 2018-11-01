@@ -1,15 +1,15 @@
 <template>
-  <div class="player">
+  <div :class="['player', colorClass]">
     <DiceArea
       :dice="dice"
       :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
     <div class="nameplate">
-      Jefferson
+      {{ name }}
     </div>
     <Scoreboard
       :diceIsRolling="diceIsRolling"
       :score="score"/>
-    <ProbabilityChart :chartData="probabilityHistory"/>
+    <ProbabilityChart :chartData="probabilities"/>
   </div>
 </template>
 
@@ -26,16 +26,24 @@ export default {
     Scoreboard,
   },
   props: {
+    colorClass: {
+      type: String,
+      default: '',
+    },
     dice: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     diceIsRolling: {
       type: Boolean,
       required: true,
     },
-    probability: {
-      type: Number,
+    name: {
+      type: String,
+      required: true,
+    },
+    probabilities: {
+      type: Array,
       required: true,
     },
     score: {
@@ -49,20 +57,11 @@ export default {
   },
   data: () => ({
     animatingDice: false,
-    probabilityHistory: [],
     scoreChangeInterval: null,
     scoreDifference: 0,
     scoreDisplay: 0,
     triggerDifferenceAnimation: false,
   }),
-  created() {
-    this.probabilityHistory.push(this.probability);
-  },
-  watch: {
-    probability(newVal) {
-      this.probabilityHistory.push(newVal);
-    },
-  },
 };
 </script>
 
@@ -73,10 +72,6 @@ export default {
   min-height: 300px;
   padding: 40px 50px;
 }
-
-.player:first-child { background-color: #96858f; }
-.player:nth-child(2) { background-color: #6d7993; }
-.player:nth-child(3) { background-color: #9099a2; }
 
 .nameplate {
   font-size: 16px;

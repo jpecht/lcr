@@ -3,26 +3,35 @@
     <div class="game-header">
       <div class="nav">
         <button @click="startNewGame">New Game</button>
-        <button>Settings</button>
+        <button @click="toggleSettingsMenu">Settings</button>
+        <SettingsMenu
+          v-model="settingsOpen"
+          :numPlayers="numPlayers"
+          :updateNumPlayers="updateNumPlayers"/>
       </div>
-    	<h1>LCR</h1>
+      <h1>LCR</h1>
     </div>
     <div class="playarea">
       <Player
         v-for="(score, index) in scores"
         :key="index"
+        :colorClass="colorClasses[index]"
         :dice="diceToDisplay(index)"
         :diceIsRolling="diceIsRolling"
-        :probability="probabilities[index]"
+        :name="names[index]"
+        :probabilities="probabilities[index]"
         :score="score"
         :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
     </div>
     <div class="game-footer">
       <div class="roll-button-container">
         <button
-          class="roll-button"
+          :class="{
+            'roll-button': true,
+            'roll-button-rolling': diceIsRolling,
+          }"
           @click="handleRollClick">
-          Roll
+          {{ diceIsRolling ? 'Rolling...' : 'Roll' }}
         </button>
       </div>
     </div>
@@ -31,21 +40,24 @@
 
 <script>
 import Player from '@/components/Player.vue';
+import SettingsMenu from '@/components/SettingsMenu.vue';
 import Simulator from '@/Simulator';
-
-const sim = new Simulator();
 
 export default {
   name: 'home',
   components: {
     Player,
+    SettingsMenu,
   },
   data: () => ({
+    colorClasses: ['red', 'blue', 'green'],
     currentRoll: [],
     diceIsRolling: false,
+    names: ['Casey', 'Jefferson', 'Todd', 'Chase', 'Miriam', 'Danka', 'Joe', 'Happy'],
     numPlayers: 3,
     probabilities: [],
     scores: [],
+    settingsOpen: false,
     startingScore: 3,
     turnIndex: -1, // the index of the player whose turn it is
   }),
@@ -58,6 +70,11 @@ export default {
     },
     indexToRight() {
       return (this.turnIndex === this.numPlayers - 1) ? 0 : this.turnIndex + 1;
+    },
+  },
+  watch: {
+    numPlayers() {
+      this.startNewGame();
     },
   },
   methods: {
@@ -90,6 +107,12 @@ export default {
         this.updateScores();
       }
     },
+    recordProbabilities() {
+      const newProbabilities = Simulator.calculateProbabilities(this.scores);
+      newProbabilities.forEach((prob, index) => {
+        this.probabilities[index].push(prob);
+      });
+    },
     rollDice() {
       const value = 6 * Math.random();
       if (value < 1) return 'L';
@@ -98,24 +121,27 @@ export default {
       return 'O';
     },
     startNewGame() {
+      // Empty out dice, clear turn
       this.currentRoll = [];
       this.turnIndex = -1;
 
-      // Initialize score for each player
+      // Initialize scores and probabilities for each player
       this.probabilities = [];
       this.scores = [];
       for (let i = 0; i < this.numPlayers; i += 1) {
-        this.probabilities.push(0);
+        this.probabilities.push([]);
         this.scores.push(this.startingScore);
       }
-      this.probabilities = sim.calculateProbabilities(this.scores);
+      this.recordProbabilities();
     },
+    toggleSettingsMenu() { this.settingsOpen = !this.settingsOpen; },
     updateIfDiceIsRolling(value) {
       this.diceIsRolling = value;
       if (this.diceIsRolling === false) {
-        this.probabilities = sim.calculateProbabilities(this.scores);
+        this.recordProbabilities();
       }
     },
+    updateNumPlayers(numPlayers) { this.numPlayers = numPlayers; },
     updateScores() {
       this.currentRoll.forEach((roll) => {
         if (roll === 'L') {
@@ -155,6 +181,7 @@ export default {
 .nav {
   position: absolute;
   right: 10px;
+  text-align: right;
   top: 20px;
   button {
     background-color: #fff;
@@ -194,5 +221,9 @@ export default {
   font-size: 20px;
   outline: 0;
   padding: 20px 50px;
+  &.roll-button-rolling {
+    color: #777;
+    cursor: not-allowed;
+  }
 }
 </style>
