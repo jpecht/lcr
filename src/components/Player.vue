@@ -70,7 +70,7 @@ export default {
   color: rgba(0, 0, 0, 0.9);
   flex: 1;
   min-height: 300px;
-  padding: 40px 50px;
+  padding: 20px;
 }
 
 .nameplate {

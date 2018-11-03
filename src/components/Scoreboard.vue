@@ -20,6 +20,9 @@
 </template>
 
 <script>
+const scoreChangeDelay = 250;
+const scoreChangeDuration = 300;
+
 export default {
   name: 'Scoreboard',
   props: {
@@ -58,8 +61,6 @@ export default {
 
       if (this.scoreDifference) {
         // Update the score the user is seeing
-        const scoreChangeDelay = 350;
-        const scoreChangeDuration = 400;
         setTimeout(() => {
           this.scoreChangeInterval = setInterval(() => {
             this.scoreDisplay += (this.scoreDifference > 0) ? 1 : -1;
