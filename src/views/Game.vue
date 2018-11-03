@@ -11,18 +11,13 @@
       </div>
       <h1>LCR</h1>
     </div>
-    <div class="playarea">
-      <Player
-        v-for="(score, index) in scores"
-        :key="index"
-        :colorClass="colorClasses[index]"
-        :dice="diceToDisplay(index)"
-        :diceIsRolling="diceIsRolling"
-        :name="names[index]"
-        :probabilities="probabilities[index]"
-        :score="score"
-        :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
-    </div>
+    <PlayerView
+      :currentRoll="currentRoll"
+      :diceIsRolling="diceIsRolling"
+      :probabilities="probabilities"
+      :scores="scores"
+      :turnIndex="turnIndex"
+      :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
     <div class="game-footer">
       <div class="roll-button-container">
         <button
@@ -39,21 +34,19 @@
 </template>
 
 <script>
-import Player from '@/components/Player.vue';
+import PlayerView from '@/components/PlayerView.vue';
 import SettingsMenu from '@/components/SettingsMenu.vue';
 import Simulator from '@/Simulator';
 
 export default {
   name: 'home',
   components: {
-    Player,
+    PlayerView,
     SettingsMenu,
   },
   data: () => ({
-    colorClasses: ['red', 'blue', 'green'],
     currentRoll: [],
     diceIsRolling: false,
-    names: ['Casey', 'Jefferson', 'Todd', 'Chase', 'Miriam', 'Danka', 'Joe', 'Happy'],
     numPlayers: 3,
     probabilities: [],
     scores: [],
@@ -80,12 +73,6 @@ export default {
   methods: {
     didSomeoneWin() {
       return (this.scores.filter(score => score > 0).length <= 1);
-    },
-    diceToDisplay(playerIndex) {
-      if (playerIndex === this.turnIndex) {
-        return this.currentRoll;
-      }
-      return [];
     },
     goToNextTurn() {
       if (this.didSomeoneWin()) {
@@ -198,10 +185,6 @@ export default {
       background-color: #ddd;
     }
   }
-}
-
-.playarea {
-  display: flex;
 }
 
 .game-footer {

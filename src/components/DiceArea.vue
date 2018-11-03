@@ -6,7 +6,7 @@
 
 <script>
 const animationStepTime = 50;
-const animationDuration = 1500;
+const animationDuration = 1000;
 
 export default {
   name: 'DiceArea',
