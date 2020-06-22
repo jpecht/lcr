@@ -87,7 +87,7 @@ export default {
     ]),
 
     handleClick() {
-      if (winnerIndex > -1) return;
+      if (this.winnerIndex > -1) return;
 
       // Roll the dice
       if (this.isUp && !this.currentRoll.length) {
@@ -111,7 +111,6 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.6);
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  display: inline-block;
   font-weight: 300;
   margin-top: 15px;
   padding: 10px 20px 5px;
