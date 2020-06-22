@@ -13,12 +13,18 @@ export default new Vuex.Store({
     probabilities: [],
     scores: [],
     turnIndex: 0,
+    winnerIndex: -1,
   },
   mutations: {
     addProbabilities(state, newProbabilities) {
       newProbabilities.forEach((prob, index) => {
         state.probabilities[index].push(prob);
       });
+    },
+    checkForWin(state) {
+      if (state.scores.filter(score => score > 0).length <= 1) {
+        state.winnerIndex = state.scores.findIndex(score => score > 0);
+      }
     },
     clearPendingScores(state) {
       state.pendingScores = [...state.scores];
@@ -38,6 +44,7 @@ export default new Vuex.Store({
       }
       state.scores = new Array(state.numPlayers).fill(3);
       state.turnIndex = 0;
+      state.winnerIndex = -1;
     },
     setCurrentRoll(state, currentRoll) {
       state.currentRoll = [...currentRoll];
@@ -61,6 +68,7 @@ export default new Vuex.Store({
       commit('clearPendingScores');
       commit('setCurrentRoll', []);
       dispatch('setProbabilities');
+      commit('checkForWin');
       commit('incrementTurn');
     },
     getIndexToLeft({ state }) {

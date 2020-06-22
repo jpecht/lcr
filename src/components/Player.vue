@@ -9,6 +9,7 @@
       </div>
       <DiceArea
         :isUp="isUp"
+        :isWinner="isWinner"
         :pendingScore="pendingScore"
         :score="score"
       />
@@ -35,6 +36,10 @@ export default {
       default: '',
     },
     isUp: {
+      type: Boolean,
+      default: false,
+    },
+    isWinner: {
       type: Boolean,
       default: false,
     },

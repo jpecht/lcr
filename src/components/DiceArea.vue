@@ -5,6 +5,7 @@
   >
     <div class="dice-display">
       <div
+        v-show="!isWinner"
         v-for="(d, index) in diceShown"
         :key="index"
         :class="['dice', {
@@ -18,14 +19,17 @@
           class="dice-bad-overlay"
         />
       </div>
+      <div v-show="isWinner" class="winner-text">
+        Winner!
+      </div>
     </div>
     <div class="roll-text">
       <transition name="fadein">
-        <span v-show="isUp && !currentRoll.length">
+        <span v-show="isUp && !currentRoll.length && !isWinner">
           ROLL
         </span>
       </transition>
-      <span v-show="isUp && currentRoll.length && !diceIsRolling">
+      <span v-show="isUp && currentRoll.length && !diceIsRolling && !isWinner">
         ACCEPT
       </span>
     </div>
@@ -45,6 +49,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isWinner: {
+      type: Boolean,
+      default: false,
+    },
     pendingScore: {
       type: Number,
       required: true,
@@ -58,6 +66,7 @@ export default {
     ...mapState([
       'currentRoll',
       'diceIsRolling',
+      'winnerIndex',
     ]),
 
     diceShown() {
@@ -78,6 +87,8 @@ export default {
     ]),
 
     handleClick() {
+      if (winnerIndex > -1) return;
+
       // Roll the dice
       if (this.isUp && !this.currentRoll.length) {
         this.rollDice(Math.min(this.score, 3));
@@ -153,6 +164,13 @@ export default {
   font-size: 12px;
   font-weight: 600;
   height: 16px;
+  text-align: center;
+}
+
+.winner-text {
+  font-size: 17px;
+  font-weight: bold;
+  padding-top: 25px;
   text-align: center;
 }
 

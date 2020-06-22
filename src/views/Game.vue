@@ -56,9 +56,6 @@ export default {
       'startNewGame',
     ]),
 
-    didSomeoneWin() {
-      return this.scores.filter(score => score > 0).length <= 1;
-    },
     toggleInstructions() { this.instructionsVisible = !this.instructionsVisible; },
     toggleSettingsMenu() { this.settingsOpen = !this.settingsOpen; },
     updateNumPlayers(numPlayers) { this.setNumPlayers(numPlayers); },

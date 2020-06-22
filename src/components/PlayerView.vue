@@ -5,6 +5,7 @@
       :key="index"
       :colorClass="colorClasses[index]"
       :isUp="index === turnIndex"
+      :isWinner="index === winnerIndex"
       :name="names[index]"
       :pendingScore="pendingScores[index]"
       :playerIndex="index"
@@ -33,6 +34,7 @@ export default {
       'probabilities',
       'scores',
       'turnIndex',
+      'winnerIndex',
     ]),
   },
   methods: {
