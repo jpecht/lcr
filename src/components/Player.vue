@@ -5,16 +5,11 @@
         <div class="nameplate">
           {{ name }}
         </div>
-        <Scoreboard
-          :diceIsRolling="diceIsRolling"
-          :score="score"/>
+        <Scoreboard :score="score"/>
       </div>
       <DiceArea
-        :diceRolled="diceRolled"
-        :isNext="isNext"
+        :isUp="isUp"
         :score="score"
-        :updateIfDiceIsRolling="updateIfDiceIsRolling"
-        @click="handleDiceAreaClick"
       />
     </div>
     <ProbabilityChart :chartData="probabilities"/>
@@ -38,19 +33,7 @@ export default {
       type: String,
       default: '',
     },
-    diceRolled: {
-      type: Array,
-      default: () => [],
-    },
-    diceIsRolling: {
-      type: Boolean,
-      required: true,
-    },
-    handleRollClick: {
-      type: Function,
-      required: true,
-    },
-    isNext: {
+    isUp: {
       type: Boolean,
       default: false,
     },
@@ -65,24 +48,6 @@ export default {
     score: {
       type: Number,
       required: true,
-    },
-    updateIfDiceIsRolling: {
-      type: Function,
-      required: true,
-    },
-  },
-  data: () => ({
-    animatingDice: false,
-    scoreChangeInterval: null,
-    scoreDifference: 0,
-    scoreDisplay: 0,
-    triggerDifferenceAnimation: false,
-  }),
-  methods: {
-    handleDiceAreaClick() {
-      if (this.isNext) {
-        this.handleRollClick();
-      }
     },
   },
 };

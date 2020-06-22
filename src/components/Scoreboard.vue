@@ -23,13 +23,11 @@
 const scoreChangeDelay = 250;
 const scoreChangeDuration = 300;
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'Scoreboard',
   props: {
-    diceIsRolling: {
-      type: Boolean,
-      required: true,
-    },
     score: {
       type: Number,
       required: true,
@@ -41,15 +39,14 @@ export default {
     scoreDisplay: 0,
     triggerDifferenceAnimation: false,
   }),
+  computed: {
+    ...mapState(['diceIsRolling']),
+  },
   created() {
     this.scoreDisplay = this.score;
   },
   watch: {
-    diceIsRolling(newVal, oldVal) {
-      if (oldVal === true && newVal === false) {
-        this.updateScores();
-      }
-    },
+    score() { this.updateScores(); },
   },
   methods: {
     updateScores() {

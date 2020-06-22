@@ -5,29 +5,23 @@
   >
     <div class="dice-display">
       <div
-        v-for="d in diceShown"
+        v-for="(d, index) in diceShown"
         :key="index"
         class="dice"
       >
-        {{ d }}
-      </div>
-      <div class="extra-dice-container">
-        <div
-          v-for="d in extraDice"
-          :key="index"
-          class="dice"
-        >
-          &nbsp;
-        </div>
+        <template v-if="d">{{ d }}</template>
+        <template v-else>&nbsp;</template>
       </div>
     </div>
     <div class="roll-text">
       <transition name="fadein">
-        <span v-show="isNext">
+        <span v-show="isUp && !currentRoll.length">
           ROLL
         </span>
       </transition>
-      <span v-show="!isNext">&nbsp;</span>
+      <span v-show="isUp && currentRoll.length && !diceIsRolling">
+        ACCEPT
+      </span>
     </div>
   </div>
 </template>
@@ -36,14 +30,12 @@
 const animationStepTime = 50;
 const animationDuration = 1000;
 
+import { mapActions, mapState } from 'vuex';
+
 export default {
   name: 'DiceArea',
   props: {
-    diceRolled: {
-      type: Array,
-      required: true,
-    },
-    isNext: {
+    isUp: {
       type: Boolean,
       default: false,
     },
@@ -51,64 +43,51 @@ export default {
       type: Number,
       required: true,
     },
-    updateIfDiceIsRolling: {
-      type: Function,
-      required: true,
-    },
   },
-  created() {
-    this.settleDice();
-  },
-  data: () => ({
-    animationInterval: null,
-    diceShown: [],
-  }),
   computed: {
-    extraDice() {
-      if (this.score <= 3) return [];
-      const dice = [];
-      for (let i = 0; i < this.score - 3; i++) {
-        dice.push(0);
+    ...mapState([
+      'currentRoll',
+      'diceIsRolling',
+    ]),
+
+    diceShown() {
+      const dice = new Array(this.score).fill('');
+      if (this.isUp && this.currentRoll.length) {
+        return [...this.currentRoll, ...dice.slice(3)];
       }
       return dice;
     },
   },
-  watch: {
-    diceRolled(val) {
-      if (val.length) {
-        this.updateIfDiceIsRolling(true);
-        this.animateDice(val.length);
-
-        setTimeout(() => {
-          this.settleDice();
-          this.updateIfDiceIsRolling(false);
-        }, animationDuration);
-      } else {
-        this.showBaseDice();
-      }
-    },
-  },
   methods: {
+    ...mapActions([
+      'acceptDiceRoll',
+      'rollDice',
+    ]),
+
     animateDice(numDie) {
-      this.animationInterval = setInterval(() => {
-        const diceSides = ['C', 'L', 'R', 'O'];
-        this.diceShown = [];
-        for (let i = 0; i < numDie; i += 1) {
-          this.diceShown.push(diceSides[Math.floor(diceSides.length * Math.random())]);
+      /* if (!this.diceIsRolling) {
+        this.goToNextTurn();
+        this.currentRoll = [];
+        let numDiceToRoll = this.scores[this.turnIndex];
+        if (numDiceToRoll > 3) numDiceToRoll = 3;
+        for (let i = 0; i < numDiceToRoll; i += 1) {
+          this.currentRoll.push(this.rollDice());
         }
-      }, animationStepTime);
+        this.updateScores();
+      } */
     },
+
     handleClick() {
-      this.$emit('click');
-    },
-    settleDice() {
-      clearInterval(this.animationInterval);
-      this.diceShown = this.diceRolled.slice(0);
-    },
-    showBaseDice() {
-      this.diceShown = [];
-      for (let i = 0; i < Math.min(this.score, 3); i += 1) {
-        this.diceShown.push('');
+      // Roll the dice
+      if (this.isUp && !this.currentRoll.length) {
+        this.rollDice(Math.min(this.score, 3));
+        return;
+      }
+
+      // Accept the dice roll
+      if (this.isUp && this.currentRoll.length && !this.diceIsRolling) {
+        this.acceptDiceRoll();
+        return;
       }
     },
   },
@@ -153,15 +132,17 @@ export default {
   width: 14px;
 }
 
+.dice:nth-child(4) { margin-left: 20px; }
+
 .roll-text {
   font-size: 12px;
   font-weight: 600;
+  height: 16px;
   text-align: center;
 }
 
 .fadein-enter-active {
-  transition: all 2s ease;
-  transition-delay: 1.5s;
+  transition: all 1s ease;
 }
 
 .fadein-enter {

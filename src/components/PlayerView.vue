@@ -4,18 +4,17 @@
       v-for="(score, index) in scores"
       :key="index"
       :colorClass="colorClasses[index]"
-      :diceRolled="diceToDisplay(index)"
-      :diceIsRolling="diceIsRolling"
-      :handleRollClick="handleRollClick"
-      :isNext="isNext(index)"
+      :isUp="index === turnIndex"
       :name="names[index]"
+      :playerIndex="index"
       :probabilities="probabilities[index]"
       :score="score"
-      :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
+    />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Player from '@/components/Player.vue';
 
 export default {
@@ -23,51 +22,23 @@ export default {
   components: {
     Player,
   },
-  props: {
-    currentRoll: {
-      type: Array,
-      required: true,
-    },
-    diceIsRolling: {
-      type: Boolean,
-      required: true,
-    },
-    handleRollClick: {
-      type: Function,
-      required: true,
-    },
-    probabilities: {
-      type: Array,
-      required: true,
-    },
-    scores: {
-      type: Array,
-      required: true,
-    },
-    turnIndex: {
-      type: Number,
-      required: true,
-    },
-    updateIfDiceIsRolling: {
-      type: Function,
-      required: true,
-    },
-  },
   data: () => ({
     colorClasses: ['red', 'blue', 'green', 'purple', 'lightblue'],
     names: ['Casey', 'Jefferson', 'Todd', 'Chase', 'Miriam', 'Danka', 'Joe', 'Happy'],
   }),
+  computed: {
+    ...mapState([
+      'probabilities',
+      'scores',
+      'turnIndex',
+    ]),
+  },
   methods: {
     diceToDisplay(playerIndex) {
       if (playerIndex === this.turnIndex) {
         return this.currentRoll;
       }
       return [];
-    },
-    isNext(playerIndex) {
-      const numPlayers = this.scores.length;
-      if (playerIndex === 0 && this.turnIndex === numPlayers - 1) return true;
-      return playerIndex === this.turnIndex + 1;
     },
   },
 };
