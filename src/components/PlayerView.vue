@@ -4,7 +4,7 @@
       v-for="(score, index) in scores"
       :key="index"
       :colorClass="colorClasses[index]"
-      :dice="diceToDisplay(index)"
+      :diceRolled="diceToDisplay(index)"
       :diceIsRolling="diceIsRolling"
       :handleRollClick="handleRollClick"
       :isNext="isNext(index)"

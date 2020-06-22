@@ -4,7 +4,22 @@
     @click="handleClick"
   >
     <div class="dice-display">
-      {{ diceShown }}
+      <div
+        v-for="d in diceShown"
+        :key="index"
+        class="dice"
+      >
+        {{ d }}
+      </div>
+      <div class="extra-dice-container">
+        <div
+          v-for="d in extraDice"
+          :key="index"
+          class="dice"
+        >
+          &nbsp;
+        </div>
+      </div>
     </div>
     <div class="roll-text">
       <transition name="fadein">
@@ -24,7 +39,7 @@ const animationDuration = 1000;
 export default {
   name: 'DiceArea',
   props: {
-    dice: {
+    diceRolled: {
       type: Array,
       required: true,
     },
@@ -32,20 +47,34 @@ export default {
       type: Boolean,
       default: false,
     },
+    score: {
+      type: Number,
+      required: true,
+    },
     updateIfDiceIsRolling: {
       type: Function,
       required: true,
     },
   },
-  data: () => ({
-    animationInterval: null,
-    diceShown: '',
-  }),
   created() {
     this.settleDice();
   },
+  data: () => ({
+    animationInterval: null,
+    diceShown: [],
+  }),
+  computed: {
+    extraDice() {
+      if (this.score <= 3) return [];
+      const dice = [];
+      for (let i = 0; i < this.score - 3; i++) {
+        dice.push(0);
+      }
+      return dice;
+    },
+  },
   watch: {
-    dice(val) {
+    diceRolled(val) {
       if (val.length) {
         this.updateIfDiceIsRolling(true);
         this.animateDice(val.length);
@@ -55,7 +84,7 @@ export default {
           this.updateIfDiceIsRolling(false);
         }, animationDuration);
       } else {
-        this.settleDice();
+        this.showBaseDice();
       }
     },
   },
@@ -63,11 +92,10 @@ export default {
     animateDice(numDie) {
       this.animationInterval = setInterval(() => {
         const diceSides = ['C', 'L', 'R', 'O'];
-        const diceShown = [];
+        this.diceShown = [];
         for (let i = 0; i < numDie; i += 1) {
-          diceShown.push(diceSides[Math.floor(diceSides.length * Math.random())]);
+          this.diceShown.push(diceSides[Math.floor(diceSides.length * Math.random())]);
         }
-        this.diceShown = diceShown.join(' ');
       }, animationStepTime);
     },
     handleClick() {
@@ -75,7 +103,13 @@ export default {
     },
     settleDice() {
       clearInterval(this.animationInterval);
-      this.diceShown = this.dice.join(' ');
+      this.diceShown = this.diceRolled.slice(0);
+    },
+    showBaseDice() {
+      this.diceShown = [];
+      for (let i = 0; i < Math.min(this.score, 3); i += 1) {
+        this.diceShown.push('');
+      }
     },
   },
 };
@@ -90,9 +124,9 @@ export default {
   display: inline-block;
   font-weight: 300;
   margin-top: 15px;
-  padding: 10px 30px 5px;
+  padding: 10px 20px 5px;
   position: relative;
-  width: 150px;
+  width: 180px;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.6);
@@ -100,9 +134,23 @@ export default {
 }
 
 .dice-display {
-  font-size: 24px;
   height: 60px;
+}
+
+.extra-dice-container {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.dice {
+  border: 1px solid #333;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 2px;
+  padding: 2px 5px;
   text-align: center;
+  width: 14px;
 }
 
 .roll-text {

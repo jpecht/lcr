@@ -10,8 +10,9 @@
           :score="score"/>
       </div>
       <DiceArea
-        :dice="dice"
+        :diceRolled="diceRolled"
         :isNext="isNext"
+        :score="score"
         :updateIfDiceIsRolling="updateIfDiceIsRolling"
         @click="handleDiceAreaClick"
       />
@@ -37,7 +38,7 @@ export default {
       type: String,
       default: '',
     },
-    dice: {
+    diceRolled: {
       type: Array,
       default: () => [],
     },
