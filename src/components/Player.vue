@@ -9,6 +9,7 @@
       </div>
       <DiceArea
         :isUp="isUp"
+        :pendingScore="pendingScore"
         :score="score"
       />
     </div>
@@ -39,6 +40,10 @@ export default {
     },
     name: {
       type: String,
+      required: true,
+    },
+    pendingScore: {
+      type: Number,
       required: true,
     },
     probabilities: {

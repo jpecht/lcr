@@ -20,8 +20,8 @@
 </template>
 
 <script>
-const scoreChangeDelay = 250;
-const scoreChangeDuration = 300;
+const scoreChangeDelay = 0;
+const scoreChangeDuration = 0;
 
 import { mapState } from 'vuex';
 

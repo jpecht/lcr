@@ -21,7 +21,6 @@
 import { mapActions, mapState } from 'vuex';
 import PlayerView from '@/components/PlayerView.vue';
 import SettingsMenu from '@/components/SettingsMenu.vue';
-import Simulator from '@/Simulator';
 
 export default {
   name: 'home',
@@ -52,19 +51,7 @@ export default {
     didSomeoneWin() {
       return this.scores.filter(score => score > 0).length <= 1;
     },
-    recordProbabilities() {
-      const newProbabilities = Simulator.calculateProbabilities(this.scores);
-      newProbabilities.forEach((prob, index) => {
-        this.probabilities[index].push(prob);
-      });
-    },
     toggleSettingsMenu() { this.settingsOpen = !this.settingsOpen; },
-    updateIfDiceIsRolling(value) {
-      this.diceIsRolling = value;
-      if (this.diceIsRolling === false) {
-        this.recordProbabilities();
-      }
-    },
     updateNumPlayers(numPlayers) { this.numPlayers = numPlayers; },
   },
 };

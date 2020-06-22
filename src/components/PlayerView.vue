@@ -6,6 +6,7 @@
       :colorClass="colorClasses[index]"
       :isUp="index === turnIndex"
       :name="names[index]"
+      :pendingScore="pendingScores[index]"
       :playerIndex="index"
       :probabilities="probabilities[index]"
       :score="score"
@@ -28,6 +29,7 @@ export default {
   }),
   computed: {
     ...mapState([
+      'pendingScores',
       'probabilities',
       'scores',
       'turnIndex',

@@ -15,6 +15,7 @@ body {
 }
 
 #app {
+  background-color: #bbb;
   color: #2c3e50;
   font-family: 'Krub', Helvetica, Arial, sans-serif;
   font-weight: 300;

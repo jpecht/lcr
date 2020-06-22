@@ -7,10 +7,16 @@
       <div
         v-for="(d, index) in diceShown"
         :key="index"
-        class="dice"
+        :class="['dice', {
+          'dice-pending': d === 'P',
+        }]"
       >
-        <template v-if="d">{{ d }}</template>
+        <template v-if="d && d !== 'P'">{{ d }}</template>
         <template v-else>&nbsp;</template>
+        <div
+          v-show="d && d !== 'O' && d !== 'P' && !diceIsRolling"
+          class="dice-bad-overlay"
+        />
       </div>
     </div>
     <div class="roll-text">
@@ -39,6 +45,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    pendingScore: {
+      type: Number,
+      required: true,
+    },
     score: {
       type: Number,
       required: true,
@@ -54,6 +64,9 @@ export default {
       const dice = new Array(this.score).fill('');
       if (this.isUp && this.currentRoll.length) {
         return [...this.currentRoll, ...dice.slice(3)];
+      }
+      if (this.pendingScore > this.score) {
+        return new Array(this.pendingScore).fill('').fill('P', this.score);
       }
       return dice;
     },
@@ -127,12 +140,27 @@ export default {
   font-size: 16px;
   font-weight: bold;
   margin-right: 2px;
+  overflow: hidden;
   padding: 2px 5px;
+  position: relative;
   text-align: center;
   width: 14px;
 }
 
-.dice:nth-child(4) { margin-left: 20px; }
+.dice:nth-child(4) { margin-left: 10px; }
+
+.dice-pending { background-color: forestgreen; }
+
+.dice-bad-overlay {
+  border: 2px solid red;
+  box-sizing: border-box;
+  height: 30px;
+  left: -3px;
+  position: absolute;
+  top: -2px;
+  width: 30px;
+  transform: rotate(45deg);
+}
 
 .roll-text {
   font-size: 12px;
