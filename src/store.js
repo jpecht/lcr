@@ -45,6 +45,9 @@ export default new Vuex.Store({
     setDiceRolling(state, isDiceRolling) {
       state.diceIsRolling = isDiceRolling;
     },
+    setNumPlayers(state, numPlayers) {
+      state.numPlayers = numPlayers;
+    },
     setPendingScores(state, scores) {
       state.pendingScores = [...scores];
     },
@@ -100,6 +103,10 @@ export default new Vuex.Store({
         }
       });
       commit('setPendingScores', newScores);
+    },
+    setNumPlayers({ commit, dispatch }, numPlayers) {
+      commit('setNumPlayers', numPlayers);
+      dispatch('startNewGame');
     },
     setProbabilities({ commit, state }) {
       const newProbabilities = Simulator.calculateProbabilities(state.scores);

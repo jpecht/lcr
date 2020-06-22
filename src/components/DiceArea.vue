@@ -77,19 +77,6 @@ export default {
       'rollDice',
     ]),
 
-    animateDice(numDie) {
-      /* if (!this.diceIsRolling) {
-        this.goToNextTurn();
-        this.currentRoll = [];
-        let numDiceToRoll = this.scores[this.turnIndex];
-        if (numDiceToRoll > 3) numDiceToRoll = 3;
-        for (let i = 0; i < numDiceToRoll; i += 1) {
-          this.currentRoll.push(this.rollDice());
-        }
-        this.updateScores();
-      } */
-    },
-
     handleClick() {
       // Roll the dice
       if (this.isUp && !this.currentRoll.length) {

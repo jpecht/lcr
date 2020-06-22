@@ -47,4 +47,10 @@ export default {
 </script>
 
 <style scoped>
+.player-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
 </style>

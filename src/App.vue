@@ -11,6 +11,7 @@
 
 body {
   box-sizing: border-box;
+  height: 100vh;
   margin: 0;
 }
 
@@ -20,6 +21,7 @@ body {
   font-family: 'Krub', Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: 14px;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   h1 {

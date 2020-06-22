@@ -36,15 +36,12 @@ export default {
   },
   computed: {
     ...mapState([
-      'diceIsRolling',
       'numPlayers',
-      'probabilities',
-      'scores',
-      'turnIndex',
     ]),
   },
   methods: {
     ...mapActions([
+      'setNumPlayers',
       'startNewGame',
     ]),
 
@@ -52,7 +49,7 @@ export default {
       return this.scores.filter(score => score > 0).length <= 1;
     },
     toggleSettingsMenu() { this.settingsOpen = !this.settingsOpen; },
-    updateNumPlayers(numPlayers) { this.numPlayers = numPlayers; },
+    updateNumPlayers(numPlayers) { this.setNumPlayers(numPlayers); },
   },
 };
 </script>
@@ -61,7 +58,7 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   text-align: center;
 }
 
