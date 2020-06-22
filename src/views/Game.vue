@@ -3,12 +3,22 @@
     <div class="game-header">
       <div class="nav">
         <button @click="startNewGame">New Game</button>
+        <button @click="toggleInstructions">How to Play</button>
         <button @click="toggleSettingsMenu">Settings</button>
         <SettingsMenu
           v-model="settingsOpen"
           :numPlayers="numPlayers"
           :updateNumPlayers="updateNumPlayers"
         />
+        <div v-show="instructionsVisible" class="instructions">
+          Roll the dice to determine where to pass it.
+          <ul>
+            <li>An L means you pass that die to the person to your left</li>
+            <li>An R means you pass that die to the person to your right</li>
+            <li>A C means you discard that die in the center</li>
+            <li>An O means you get to keep the die!</li>
+          </ul>
+        </div>
       </div>
       <h1>LCR</h1>
       <h2>A dice game of probability</h2>
@@ -29,6 +39,7 @@ export default {
     SettingsMenu,
   },
   data: () => ({
+    instructionsVisible: false,
     settingsOpen: false,
   }),
   created() {
@@ -48,6 +59,7 @@ export default {
     didSomeoneWin() {
       return this.scores.filter(score => score > 0).length <= 1;
     },
+    toggleInstructions() { this.instructionsVisible = !this.instructionsVisible; },
     toggleSettingsMenu() { this.settingsOpen = !this.settingsOpen; },
     updateNumPlayers(numPlayers) { this.setNumPlayers(numPlayers); },
   },
@@ -65,7 +77,7 @@ export default {
 .game-header {
   background-color: #bbb;
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  padding: 10px 50px;
+  padding: 18px 50px;
   text-align: left;
   h1 {
     display: inline-block;
@@ -99,6 +111,22 @@ export default {
     &:hover {
       background-color: #ddd;
     }
+  }
+}
+
+.instructions {
+  display: inline-block;
+  font-size: 11px;
+  margin-top: 10px;
+  max-width: 500px;
+  position: absolute;
+  left: 10px;
+  text-align: left;
+  top: 30px;
+
+  ul { margin: 2px 0 0; padding: 0; }
+  li {
+    margin-left: 30px;
   }
 }
 </style>
