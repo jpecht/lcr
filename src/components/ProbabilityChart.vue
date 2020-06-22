@@ -82,12 +82,12 @@ export default {
     },
   },
   data: () => ({
-    height: 130,
+    height: 100,
     padding: {
       left: 50,
       right: 20,
       top: 15,
-      bottom: 25,
+      bottom: 15,
     },
     width: 280,
   }),
@@ -109,6 +109,10 @@ export default {
 </script>
 
 <style scoped>
+.chartContainer {
+  display: inline-block;
+}
+
 .chart {
   background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid #555;
@@ -117,7 +121,8 @@ export default {
 }
 
 .chart-title {
-  font-size: 0.95em;
+  font-size: 12px;
+  margin-left: 10px;
   margin-top: 10px;
 }
 

@@ -1,14 +1,21 @@
 <template>
   <div :class="['player', colorClass]">
-    <DiceArea
-      :dice="dice"
-      :updateIfDiceIsRolling="updateIfDiceIsRolling"/>
-    <div class="nameplate">
-      {{ name }}
+    <div class="main-area">
+      <div>
+        <div class="nameplate">
+          {{ name }}
+        </div>
+        <Scoreboard
+          :diceIsRolling="diceIsRolling"
+          :score="score"/>
+      </div>
+      <DiceArea
+        :dice="dice"
+        :isNext="isNext"
+        :updateIfDiceIsRolling="updateIfDiceIsRolling"
+        @click="handleDiceAreaClick"
+      />
     </div>
-    <Scoreboard
-      :diceIsRolling="diceIsRolling"
-      :score="score"/>
     <ProbabilityChart :chartData="probabilities"/>
   </div>
 </template>
@@ -38,6 +45,14 @@ export default {
       type: Boolean,
       required: true,
     },
+    handleRollClick: {
+      type: Function,
+      required: true,
+    },
+    isNext: {
+      type: Boolean,
+      default: false,
+    },
     name: {
       type: String,
       required: true,
@@ -62,19 +77,30 @@ export default {
     scoreDisplay: 0,
     triggerDifferenceAnimation: false,
   }),
+  methods: {
+    handleDiceAreaClick() {
+      if (this.isNext) {
+        this.handleRollClick();
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .player {
   color: rgba(0, 0, 0, 0.9);
-  flex: 1;
-  min-height: 300px;
-  padding: 20px;
+  display: flex;
+  font-size: 20px;
+  padding: 20px 50px;
+  text-align: left;
 }
 
+.main-area { margin-right: 80px; }
+
 .nameplate {
-  font-size: 16px;
-  margin: 30px 10px 10px;
+  display: inline-block;
+  font-weight: 600;
+  width: 200px;
 }
 </style>

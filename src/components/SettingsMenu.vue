@@ -9,7 +9,7 @@
           <label>Number of Players</label>
           <div>
             <div
-              v-for="num in [3, 4, 5, 6, 7, 8]"
+              v-for="num in [3, 4, 5]"
               :class="{
                 active: numPlayers === num,
                 'num-players-option': true,
@@ -50,9 +50,8 @@ export default {
 
 <style scoped lang="scss">
 .settings-container {
-  background-color: #fff;
+  background-color: #ddd;
   border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   height: 200px;
   margin: 0 10px;
@@ -81,7 +80,6 @@ label {
   background-image: linear-gradient(270deg, #fff, #eee);
   border: 1px solid #999;
   border-right: none;
-  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   display: inline-block;
   margin: 5px 0;
@@ -100,7 +98,7 @@ label {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: all 1s ease;
+  transition: all 0.3s ease;
 }
 .fade-enter, .fade-leave-to {
   height: 0;

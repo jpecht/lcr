@@ -6,6 +6,8 @@
       :colorClass="colorClasses[index]"
       :dice="diceToDisplay(index)"
       :diceIsRolling="diceIsRolling"
+      :handleRollClick="handleRollClick"
+      :isNext="isNext(index)"
       :name="names[index]"
       :probabilities="probabilities[index]"
       :score="score"
@@ -30,6 +32,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    handleRollClick: {
+      type: Function,
+      required: true,
+    },
     probabilities: {
       type: Array,
       required: true,
@@ -48,7 +54,7 @@ export default {
     },
   },
   data: () => ({
-    colorClasses: ['red', 'blue', 'green'],
+    colorClasses: ['red', 'blue', 'green', 'purple', 'lightblue'],
     names: ['Casey', 'Jefferson', 'Todd', 'Chase', 'Miriam', 'Danka', 'Joe', 'Happy'],
   }),
   methods: {
@@ -58,12 +64,14 @@ export default {
       }
       return [];
     },
+    isNext(playerIndex) {
+      const numPlayers = this.scores.length;
+      if (playerIndex === 0 && this.turnIndex === numPlayers - 1) return true;
+      return playerIndex === this.turnIndex + 1;
+    },
   },
 };
 </script>
 
 <style scoped>
-.player-view {
-  display: flex;
-}
 </style>

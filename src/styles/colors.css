@@ -2,7 +2,11 @@
 .red { background-color: #96858f; }
 .blue { background-color: #6d7993; }
 .green { background-color: #9099a2; }
+.purple { background-color: #846b93; }
+.lightblue { background-color: #608386; }
 
 circle.red-circle { stroke: #96858f; }
 circle.blue-circle { stroke: #6d7993; }
 circle.green-circle { stroke: #9099a2; }
+circle.purple-circle { background-color: #846b93; }
+circle.lightblue-circle { background-color: #608386; }

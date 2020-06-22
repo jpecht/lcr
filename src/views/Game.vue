@@ -10,10 +10,12 @@
           :updateNumPlayers="updateNumPlayers"/>
       </div>
       <h1>LCR</h1>
+      <h2>A dice game of probability</h2>
     </div>
     <PlayerView
       :currentRoll="currentRoll"
       :diceIsRolling="diceIsRolling"
+      :handleRollClick="handleRollClick"
       :probabilities="probabilities"
       :scores="scores"
       :turnIndex="turnIndex"
@@ -157,11 +159,20 @@ export default {
 .game-header {
   background-color: #bbb;
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  padding: 20px;
+  padding: 10px 50px;
+  text-align: left;
   h1 {
+    display: inline-block;
     font-size: 40px;
     font-weight: 400;
     letter-spacing: 1.5px;
+  }
+  h2 {
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 30px;
+    position: relative;
+    top: -1px;
   }
 }
 
@@ -171,10 +182,8 @@ export default {
   text-align: right;
   top: 20px;
   button {
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid #555;
     color: #2c3e50;
     cursor: pointer;
     margin: 0 10px;

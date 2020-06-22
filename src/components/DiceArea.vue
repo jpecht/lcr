@@ -1,6 +1,19 @@
 <template>
-  <div class="dicearea">
-    {{ diceShown }}
+  <div
+    class="dicearea"
+    @click="handleClick"
+  >
+    <div class="dice-display">
+      {{ diceShown }}
+    </div>
+    <div class="roll-text">
+      <transition name="fadein">
+        <span v-show="isNext">
+          ROLL
+        </span>
+      </transition>
+      <span v-show="!isNext">&nbsp;</span>
+    </div>
   </div>
 </template>
 
@@ -14,6 +27,10 @@ export default {
     dice: {
       type: Array,
       required: true,
+    },
+    isNext: {
+      type: Boolean,
+      default: false,
     },
     updateIfDiceIsRolling: {
       type: Function,
@@ -53,6 +70,9 @@ export default {
         this.diceShown = diceShown.join(' ');
       }, animationStepTime);
     },
+    handleClick() {
+      this.$emit('click');
+    },
     settleDice() {
       clearInterval(this.animationInterval);
       this.diceShown = this.dice.join(' ');
@@ -61,16 +81,42 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dicearea {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.6);
-  border-radius: 15px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  font-size: 40px;
+  cursor: pointer;
+  display: inline-block;
   font-weight: 300;
-  height: 100px;
-  line-height: 100px;
-  margin: 0 15px;
+  margin-top: 15px;
+  padding: 10px 30px 5px;
+  position: relative;
+  width: 150px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.dice-display {
+  font-size: 24px;
+  height: 60px;
+  text-align: center;
+}
+
+.roll-text {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.fadein-enter-active {
+  transition: all 2s ease;
+  transition-delay: 1.5s;
+}
+
+.fadein-enter {
+  opacity: 0;
 }
 </style>

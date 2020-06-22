@@ -83,9 +83,9 @@ export default {
 
 <style scoped>
 .score {
-  font-size: 52px;
-  height: 140px;
-  margin-top: 10px;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -95,8 +95,9 @@ export default {
 }
 
 .score-difference {
-  position: relative;
-  top: -20px;
+  left: -10px;
+  position: absolute;
+  top: 20px;
 }
 .score-difference-positive { color: #033617; }
 .score-difference-negative { color: #4a0406; }
@@ -108,6 +109,6 @@ export default {
 .lowerfade-enter,
 .lowerfade-leave-to {
   opacity: 0;
-  transform: translate(0, 50px);
+  transform: translate(0, 20px);
 }
 </style>
